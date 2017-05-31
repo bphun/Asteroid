@@ -13,6 +13,7 @@ public class Asteroid {
 	private static final int NUM_FLYING_OBJECTS =  15;
 	private static final Dimension DIMENSIONS = Toolkit.getDefaultToolkit().getScreenSize();
 
+	
 	private Timer t;
 	private JFrame frame;
 	private AsteroidPanel panel;
@@ -55,7 +56,6 @@ public class Asteroid {
 	public void refresh() {
 		move();
 		checkCollision();
-		// drawFlyingObjects();
 		ship().shoot();
 		panel.repaint();
 	}

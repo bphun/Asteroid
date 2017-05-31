@@ -39,7 +39,7 @@ public class FlyingObject extends GameObject {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(image, (int)location.x(), (int)location.y(), null);
+		g2.drawImage(image, (int)location.x(), (int)location.y(), null);		
 	}
 
 	@Override

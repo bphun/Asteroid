@@ -10,15 +10,12 @@ import java.awt.Color;
 
 public class Ship extends GameObject {
 	
-	private Thread moveThread;
-	private Thread rotateThread;
+	private static Image shipImage;
 
 	protected Weapon weapon;
 	protected boolean rotateLeft;
 	protected boolean rotateRight;
 	protected boolean shouldAccelerate;
-
-	private static Image shipImage;
 
 	private static final double ACCEL = 0.02;
 	private static final double DECEL = ACCEL;
@@ -47,7 +44,9 @@ public class Ship extends GameObject {
 	}
 
 	public void aimWeapon() {
-		weapon.aim(this.direction);
+		// weapon.aim(this.direction);
+		weapon.aim(-this.direction);
+
 	}
 
 	public void shoot() {
@@ -69,10 +68,6 @@ public class Ship extends GameObject {
 		g2.rotate(-direction);
 		g2.drawImage(shipImage, -width / 2,  -height / 2, null);
 		g2.setTransform(a);
-
-		// g2.setColor(Color.GREEN);
-		// g2.drawRect(-(int)location.x() / 2,  -(int)location.y(), width, height);
-		// g2.setColor(Color.BLACK);
 	}
 
 	@Override
@@ -93,7 +88,6 @@ public class Ship extends GameObject {
 				}
 			}
 		}
-		checkOffScreen();
 	}
 
 	@Override
@@ -176,7 +170,6 @@ public class Ship extends GameObject {
 		if (rotateRight) {
 			direction -= 0.02;
 		}
-
 		weapon.tickCooldown();
 	}
 
