@@ -42,7 +42,7 @@ public class Asteroid {
 	private void initShip() {
 		addGameObject(0, new Ship(new Location(DIMENSIONS.width / 2, DIMENSIONS.height / 2), 18, 25, this));
 	}
-	
+
 	private void startTimer() {
 		t = new Timer(REFRESH_INTERVAL, new ActionListener() {
 			@Override
@@ -56,6 +56,7 @@ public class Asteroid {
 	public void refresh() {
 		move();
 		checkCollision();
+		drawFlyingObjects();
 		ship().shoot();
 		panel.repaint();
 	}
@@ -79,14 +80,18 @@ public class Asteroid {
 		if (currFlyingObjects < NUM_FLYING_OBJECTS) {
 			for (int i = 0; i < currFlyingObjects; i++) {
 				switch ((int)Math.random() * 4) {
-					case 0: // 
-
+					case 0:
+						addGameObject(0, new FlyingObject( new Location(0, (int)Math.random() * height()), this ));
+						break;
 					case 1:
-
+						addGameObject(0, new FlyingObject( new Location((int)Math.random() * width(), 0), this ));
+						break;
 					case 2:
-
+						addGameObject(0, new FlyingObject( new Location(width(), (int)Math.random() * height()), this ));
+						break;
 					case 3:
-
+						addGameObject(0, new FlyingObject( new Location((int)Math.random() * width(), height()), this ));
+						break;
 				}
 			}
 		}

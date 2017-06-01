@@ -8,10 +8,14 @@ public class FlyingObject extends GameObject {
 
 	Image image;
 
-	public FlyingObject(Location location, int radius, Asteroid asteroid) {
-		super(location, radius, radius, asteroid);
+	public FlyingObject(Location location, Asteroid asteroid) {
+		super(location, asteroid);
 	
 		openImage((int)Math.random() * 3);
+
+		width = image.getWidth(null);
+		height = image.getHeight(null);
+
 	}
 
 	private void openImage(int type) {

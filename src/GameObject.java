@@ -22,6 +22,13 @@ public abstract class GameObject {
 		this.health = 100;
 	}
 
+	public GameObject(Location location, Asteroid asteroid) {
+		this.location = location;
+		this.asteroid = asteroid;
+		this.shouldFall = true;
+		this.health = 100;
+	}
+
 	public abstract void draw(Graphics2D g2);
 
 	public abstract void checkCollision();

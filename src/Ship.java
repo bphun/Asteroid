@@ -6,10 +6,10 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-
+import java.util.ArrayList;
 
 public class Ship extends GameObject {
-	
+
 	private static Image shipImage;
 
 	protected Weapon weapon;
@@ -25,7 +25,6 @@ public class Ship extends GameObject {
 		super(location, width, height, asteroid);
 
 		this.weapon = new Weapon(direction, this);
-
 		this.openImage();
 	}
 
@@ -44,15 +43,13 @@ public class Ship extends GameObject {
 	}
 
 	public void aimWeapon() {
-		// weapon.aim(this.direction);
-		weapon.aim(-this.direction);
-
+		weapon.aim(this.direction);
 	}
 
 	public void shoot() {
 		if (weapon.readyToFire()) {
 			aimWeapon();
-			asteroid.addGameObject(asteroid.gameObjects().size(), weapon.shoot(new Location((this.location.x() + (width / 2)) - 12, this.location.y()), 10.0));
+			asteroid.addGameObject(asteroid.gameObjects().size(), weapon.shoot(new Location(this.location.x() + (width / 2), this.location.y() + (height / 2)), 10 ));
 			weapon.resetCooldown();
 		}
 	}
@@ -88,6 +85,7 @@ public class Ship extends GameObject {
 				}
 			}
 		}
+		checkOffScreen();
 	}
 
 	@Override
@@ -96,16 +94,16 @@ public class Ship extends GameObject {
 		System.out.println(getEdge());
 		switch (getEdge()) {	
 			case 0:
-				location.setX(asteroid.width() - width);
+				location.setX(asteroid.width());
 				break;
 			case 1:
-				location.setY(asteroid.height() - height);
+				location.setY(asteroid.height());
 				break;
 			case 2:
-				location.setX(0);
+				location.setX(width);
 				break;
 			case 3:
-				location.setY(0);
+				location.setY(height);
 				break;
 		}
 	}
@@ -144,7 +142,6 @@ public class Ship extends GameObject {
 					location.addY(vY += DECEL);
 				}
 			}
-			
 		}
 
 		// if (shouldAccelerate) {
