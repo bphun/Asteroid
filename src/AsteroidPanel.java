@@ -16,6 +16,7 @@ public class AsteroidPanel extends JPanel {
 
 	private Asteroid asteroid;
 	private Ship ship;
+	private boolean clickToRestart;
 
 	public AsteroidPanel(Dimension dimension, Asteroid asteroid) {
 		this.asteroid = asteroid;
@@ -28,6 +29,7 @@ public class AsteroidPanel extends JPanel {
 	}
 	
 	private void setUpKeyMappings() {
+		this.requestFocusInWindow();
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false),"thrust");
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true),"stopThrust");
 
@@ -100,16 +102,25 @@ public class AsteroidPanel extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent click) {
+
 				ship.shouldShoot(true);
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				if (clickToRestart) {
+					asteroid.restart();
+					clickToRestart = false;
+				}
 				ship.shouldShoot(false);
 			}
 		});
 	}
 	
+	public void clickToRestart(boolean clickToRestart) {
+		this.clickToRestart = clickToRestart;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -117,10 +128,17 @@ public class AsteroidPanel extends JPanel {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+		if (clickToRestart) {
+			g2.setColor(Color.WHITE);
+			g2.drawString("You died... click to restart.", asteroid.width() / 2, asteroid.height() / 2);
+			return;
+		}
+
 		ArrayList<GameObject> gameObjects = asteroid.gameObjects();
 		for (int i = 0; i < gameObjects.size(); i++) {
 			gameObjects.get(i).draw(g2);
 		}
+
 	}
 
 }

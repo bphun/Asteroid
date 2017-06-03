@@ -8,8 +8,12 @@ if [ "$1" == "-c" ]; then
 fi
 
 if [ "$1" == "-bo" ]; then
-	javac $file.java
-	exit 0
+        for f in *.java
+        do
+                echo "Compiling " $f
+                javac $f
+        done
+        exit 0
 fi
 
 echo "Compiling " $file

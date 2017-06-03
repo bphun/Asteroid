@@ -18,7 +18,8 @@ public class Ship extends GameObject {
 	protected boolean shouldAccelerate;
 
 	private static final double ACCEL = 0.02;
-	private static final double DECEL = ACCEL;
+	private static final double FRICTION = ACCEL;
+	private static final double DECEL = 0.05;
 	private static final int MAX_VELOCITY = 10;
 
 	public Ship(Location location, int width, int height, Asteroid asteroid) {
@@ -43,13 +44,13 @@ public class Ship extends GameObject {
 	}
 
 	public void aimWeapon() {
-		weapon.aim(this.direction);
+		weapon.aim(-this.direction - (Math.PI / 2));
 	}
 
 	public void shoot() {
 		if (weapon.readyToFire()) {
 			aimWeapon();
-			asteroid.addGameObject(asteroid.gameObjects().size(), weapon.shoot(new Location(this.location.x() + (width / 2), this.location.y() + (height / 2)), 10 ));
+			asteroid.addGameObject(asteroid.gameObjects().size(), weapon.shoot(new Location(this.location.x() + (width / 2), this.location.y() + (height / 2)), 5));
 			weapon.resetCooldown();
 		}
 	}
@@ -73,15 +74,8 @@ public class Ship extends GameObject {
 			if (go.equals(this)) { continue; }
 			if (go.boundingRect().intersects(this.boundingRect())) {
 				if (go instanceof FlyingObject) {
-					this.health = 0;
 					this.markRemove();
-				}
-
-				if (go instanceof Bullet) {
-					this.health -= 5;
-					if (this.health <= 0) {
-						this.markRemove();
-					}
+					asteroid.clickToRestart();					
 				}
 			}
 		}
@@ -91,7 +85,6 @@ public class Ship extends GameObject {
 	@Override
 	public void checkOffScreen() {
 		if (!willMoveOffscreen()) { return; }
-		System.out.println(getEdge());
 		switch (getEdge()) {	
 			case 0:
 				location.setX(asteroid.width());
@@ -108,65 +101,54 @@ public class Ship extends GameObject {
 		}
 	}
 
-
 	@Override
 	public void move() {
+		
 		if (shouldAccelerate) {
-			if (vX != MAX_VELOCITY * Math.sin(direction) && vX < MAX_VELOCITY) {
+			if (vX < MAX_VELOCITY && vX != MAX_VELOCITY * Math.sin(direction)) {
 				if (vX > MAX_VELOCITY * Math.sin(direction)) {
 					location.addX(vX += ACCEL);
 				} else {
-					location.addX(vX -= DECEL);
+					location.addX(vX -= FRICTION);
 				}
+			} else {
+				location.addX(vX -= FRICTION);
 			}
 
-			if (vY != -MAX_VELOCITY * Math.cos(direction) && vY < MAX_VELOCITY) {
+			if (vY < MAX_VELOCITY && vY != -MAX_VELOCITY * Math.cos(direction)) {
 				if (vY > -MAX_VELOCITY * Math.cos(direction)) {
 					location.addY(vY -= ACCEL);
 				} else {
-					location.addY(vY += DECEL);
+					location.addY(vY += FRICTION);
 				}
+			} else {
+				location.addY(vY -= FRICTION);
 			}
 		} else {
 			if (vX != 0) {
 				if (vX > 0) {
-					location.addX(vX -= DECEL);
+					location.addX(vX -= FRICTION);
 				} else {
-					location.addX(vX += DECEL);
+					location.addX(vX += FRICTION);
 				}
 			}
 			if (vY != 0) {
 				if (vY > 0) {
-					location.addY(vY -= DECEL);
+					location.addY(vY -= FRICTION);
 				} else {
-					location.addY(vY += DECEL);
+					location.addY(vY += FRICTION);
 				}
 			}
 		}
 
-		// if (shouldAccelerate) {
-		// 	if (vX < MAX_VELOCITY) {
-		// 		location.addX(vX += 0.02);
-		// 	}
-		// 	if (vY < MAX_VELOCITY) {
-		// 		location.addY(vY += 0.02);
-		// 	}
-		// } else {
-		// 	if (vX > 0) {
-		// 		location.addX(vX -= 0.02);
-		// 	}
-		// 	if (vY > 0) {
-		// 		location.addY(vY -= 0.02);
-		// 	}
-		// }
-
 		if (rotateLeft) {
-			direction += 0.02;
-		} 
+			direction += 0.03;
+		}
 
 		if (rotateRight) {
-			direction -= 0.02;
+			direction -= 0.03;
 		}
+
 		weapon.tickCooldown();
 	}
 

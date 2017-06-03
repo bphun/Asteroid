@@ -3,14 +3,20 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import java.net.URL;
 import java.io.IOException;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.awt.geom.AffineTransform;
 
 public class FlyingObject extends GameObject {
 
-	Image image;
+	private Image image;
 
-	public FlyingObject(Location location, Asteroid asteroid) {
+	public FlyingObject(Location location, double vX, double vY, Asteroid asteroid) {
 		super(location, asteroid);
 	
+		this.vX = vX;
+		this.vY = vY;
+
 		openImage((int)Math.random() * 3);
 
 		width = image.getWidth(null);
@@ -35,6 +41,7 @@ public class FlyingObject extends GameObject {
 			if (imgURL != null) {
 				image = ImageIO.read(imgURL);
 			}
+			image = image.getScaledInstance(image.getWidth(null) / 2, image.getHeight(null) / 2, Image.SCALE_DEFAULT);
 		} catch (IOException e) {
 			System.err.println("ERROR: Cold not open image");
 			e.printStackTrace();
@@ -43,22 +50,49 @@ public class FlyingObject extends GameObject {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(image, (int)location.x(), (int)location.y(), null);		
+		AffineTransform a = g2.getTransform();
+		g2.translate(location.x() + (width / 2), location.y() + (height / 2));
+		g2.rotate(-direction);
+		g2.drawImage(image, -width / 2,  -height / 2, null);
+		g2.setTransform(a);
+		direction += 0.01;
 	}
 
 	@Override
 	public void checkCollision() {
+		ArrayList<GameObject> gameObjects = asteroid.gameObjects();
+		for (int i = 0; i < gameObjects.size(); i++) {
+			GameObject go = gameObjects.get(i);
+			if (go.equals(this)) { continue; }
+		
+			if (this.boundingRect().intersects(go.boundingRect())) {
+				if (go instanceof Bullet) {
+					this.markRemove();
+				}
 
+				if (go instanceof FlyingObject) {
+					this.vX -= (vX * 2);
+					this.vY -= (vY * 2);
+					go.vX -= 0.01;
+					go.vY -= 0.01;
+				}
+
+
+			}
+		}
+		checkOffScreen();
 	}
 
 	@Override
 	public void checkOffScreen() {
-
+		if (!willMoveOffscreen()) { return; }
+		this.markRemove();
 	}
 
 	@Override
 	public void move() {
-		
+		location.addX(vX);
+		location.addY(vY);
 	}
 
 }

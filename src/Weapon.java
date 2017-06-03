@@ -12,7 +12,7 @@ public class Weapon {
 	public Weapon(double direction, Ship owner) {
 		this.direction = direction;
 		this.owner = owner;
-		this.maxCooldown = 10;
+		this.maxCooldown = 20;
 		this.currentCooldown = maxCooldown;
 		this.isFiring = false;
 	}

@@ -13,12 +13,10 @@ public class Asteroid {
 	private static final int NUM_FLYING_OBJECTS =  15;
 	private static final Dimension DIMENSIONS = Toolkit.getDefaultToolkit().getScreenSize();
 
-	
 	private Timer t;
 	private JFrame frame;
 	private AsteroidPanel panel;
 	private ArrayList<GameObject> gameObjects;
-
 	public static void main(String[] args) {
 		new Asteroid().start();
 	}
@@ -36,6 +34,8 @@ public class Asteroid {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		addFlyingObjects();
+
 		startTimer();
 	}
 	
@@ -53,12 +53,19 @@ public class Asteroid {
 		t.start();
 	}
 	
-	public void refresh() {
+	private void refresh() {
 		move();
 		checkCollision();
-		drawFlyingObjects();
-		ship().shoot();
+		addFlyingObjects();
+		ship().shoot();	
+		remove();	
 		panel.repaint();
+	}
+
+	private void move() {
+		for (int i = 0; i < gameObjects.size(); i++) {
+			gameObjects.get(i).move();
+		}
 	}
 
 	private void checkCollision() {
@@ -67,40 +74,53 @@ public class Asteroid {
 		}
 	}
 
-	private void drawFlyingObjects() {
-		if ((int)Math.random() * 10 != (int)Math.random() * 10 ) { return; }
-
-		int currFlyingObjects = 0;
-		for (GameObject go : gameObjects) {
-			if (go instanceof FlyingObject) {
-				currFlyingObjects++;
-			}
-		}
-
-		if (currFlyingObjects < NUM_FLYING_OBJECTS) {
-			for (int i = 0; i < currFlyingObjects; i++) {
-				switch ((int)Math.random() * 4) {
-					case 0:
-						addGameObject(0, new FlyingObject( new Location(0, (int)Math.random() * height()), this ));
-						break;
-					case 1:
-						addGameObject(0, new FlyingObject( new Location((int)Math.random() * width(), 0), this ));
-						break;
-					case 2:
-						addGameObject(0, new FlyingObject( new Location(width(), (int)Math.random() * height()), this ));
-						break;
-					case 3:
-						addGameObject(0, new FlyingObject( new Location((int)Math.random() * width(), height()), this ));
-						break;
-				}
+	private void remove() {
+		for (int i = gameObjects.size() - 1; i >= 0; i--) {
+			GameObject go = gameObjects.get(i);
+			if (go.shouldRemove()) {
+				gameObjects.remove(go);
 			}
 		}
 	}
 
-	private void move() {
+	private void addFlyingObjects() {
+		if ((int)Math.random() * 10 != (int)Math.random() * 10 ) { return; }
+
+		int currFlyingObjects = 0;
 		for (int i = 0; i < gameObjects.size(); i++) {
-			gameObjects.get(i).move();
+			if (gameObjects.get(i) instanceof FlyingObject) {
+				currFlyingObjects++;
+			}
 		}
+
+		for (int i = 0; i < NUM_FLYING_OBJECTS - currFlyingObjects; i++) {
+			switch ((int)(Math.random() * 4)) {
+				case 0:
+					addGameObject(gameObjects.size() , new FlyingObject( new Location(0, (int)(Math.random() * height())), Math.random() * 0.2, Math.random() * 0.2,this));
+					break;
+				case 1:
+					addGameObject(gameObjects.size() , new FlyingObject( new Location((int)(Math.random() * width()), 0), Math.random() * 0.2, Math.random() * 0.2, this));
+					break;
+				case 2:
+					addGameObject(gameObjects.size() , new FlyingObject( new Location(width(), (int)(Math.random() * height())), Math.random() * 0.2, Math.random() * 0.2, this));
+					break;
+				case 3:
+					addGameObject(gameObjects.size() , new FlyingObject( new Location((int)(Math.random() * width()), height()), Math.random() * 0.2, Math.random() * 0.2, this));
+					break;
+			}
+		}
+	}
+
+	public void restart() {
+		t.stop();
+		gameObjects.clear();
+		initShip();
+		addFlyingObjects();
+		t.start();
+	}
+
+	public void clickToRestart() {
+		panel.clickToRestart(true);
 	}
 
 	public Ship ship() {

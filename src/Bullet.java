@@ -21,15 +21,6 @@ public class Bullet extends GameObject {
 		this.direction = direction;
 	}
 
-	private void checkCollision(Ship p) {
-		if (isOwner(p)) {
-			return;
-		}
-		if (this.boundingRect().intersects(p.boundingRect())) {
-			markRemove();
-		}
-	}
-	
 	public boolean isOwner(Ship ship) {
 		return owner.equals(ship);
 	}
@@ -40,7 +31,8 @@ public class Bullet extends GameObject {
 
 	@Override
 	public void checkOffScreen() {
-		markRemove();
+		if (!willMoveOffscreen()) { return; }
+		this.markRemove();
 	}
 
 	@Override
@@ -54,18 +46,17 @@ public class Bullet extends GameObject {
 		ArrayList<GameObject> gameObjects = asteroid.gameObjects();
 		for (int i = 0; i < gameObjects.size(); i++) {
 			GameObject go = gameObjects.get(i);
-			if (go.equals(this)) {
-				continue;
-			}
-			if (go instanceof Ship) {
-				checkCollision((Ship) go);
-				continue;
-			}  
+			if (go.equals(this)) { continue; }
 
-			if (this.boundingRect().intersects(go.boundingRect())) {
-				markRemove();
+			if (go.boundingRect().intersects(this.boundingRect())) {
+
+				if (go instanceof FlyingObject) {
+					this.markRemove();
+				}
+
 			}
 		}
+		checkOffScreen();
 	}
 
 	@Override
