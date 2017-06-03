@@ -1,6 +1,6 @@
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Graphics2D;
 
 public abstract class GameObject {
 
@@ -29,18 +29,6 @@ public abstract class GameObject {
 		this.health = 100;
 	}
 
-	public abstract void draw(Graphics2D g2);
-
-	public abstract void checkCollision();
-
-	public abstract void checkOffScreen();
-
-	public abstract void move();
-
-	public Rectangle boundingRect() {
-		return new Rectangle((int) (location.x()), (int) (location.y()), (int) width, (int) height);
-	}
-
 	protected boolean willMoveOffscreen() {
 		Location loc = new Location(location);
 		loc.addVector(Math.atan2(vY, vX), direction);
@@ -62,6 +50,18 @@ public abstract class GameObject {
 			return 2;
 		}
 		return -1;
+	}
+
+	public abstract void draw(Graphics2D g2);
+
+	public abstract void checkCollision();
+
+	public abstract void checkOffScreen();
+
+	public abstract void move();
+
+	public Rectangle boundingRect() {
+		return new Rectangle((int) (location.x()), (int) (location.y()), (int) width, (int) height);
 	}
 
 	public void markRemove() {

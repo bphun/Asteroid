@@ -1,13 +1,10 @@
-import java.awt.Graphics2D;
-
 public class Weapon {
 
-	private double direction; //the direction the weapon is facing
-	private Location location;
 	private Ship owner;
+	private boolean isFiring;
+	private double direction;
 	private double maxCooldown;
 	private double currentCooldown;
-	private boolean isFiring;
 	
 	public Weapon(double direction, Ship owner) {
 		this.direction = direction;
@@ -57,5 +54,4 @@ public class Weapon {
 	public void setFiringStatus(boolean shouldFire) {
 		isFiring = shouldFire;
 	}
-	
 }

@@ -1,21 +1,17 @@
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.awt.Graphics2D;
 
 public class Bullet extends GameObject {
 
-	private double speed;
 	private Ship owner;
+	private double speed;
 
 	protected double direction;
 
 	public Bullet(Location location, double direction, double speed, int width, int height, Ship owner, Asteroid asteroid) {
 		super(location, width, height, asteroid);
-		super.health = 5;
+		
 		this.owner = owner;
 		this.speed = speed;
 		this.direction = direction;
@@ -53,7 +49,7 @@ public class Bullet extends GameObject {
 				if (go instanceof FlyingObject) {
 					this.markRemove();
 				}
-
+				
 			}
 		}
 		checkOffScreen();

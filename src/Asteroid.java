@@ -1,22 +1,22 @@
-import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.Timer;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.Timer;
-import javax.swing.JFrame;
 
 public class Asteroid {
-
-	private static final int REFRESH_INTERVAL = 8;
-	private static final int NUM_FLYING_OBJECTS =  15;
-	private static final Dimension DIMENSIONS = Toolkit.getDefaultToolkit().getScreenSize();
 
 	private Timer t;
 	private JFrame frame;
 	private AsteroidPanel panel;
 	private ArrayList<GameObject> gameObjects;
+	
+	private static final int REFRESH_INTERVAL = 8;
+	private static final int NUM_FLYING_OBJECTS =  15;
+	private static final Dimension DIMENSIONS = Toolkit.getDefaultToolkit().getScreenSize();
+
 	public static void main(String[] args) {
 		new Asteroid().start();
 	}
@@ -132,11 +132,11 @@ public class Asteroid {
 	}
 
 	public int height() {
-		return this.DIMENSIONS.height;
+		return Asteroid.DIMENSIONS.height;
 	}
 
 	public int width() {
-		return this.DIMENSIONS.width;
+		return Asteroid.DIMENSIONS.width;
 	}	
 
 	public ArrayList<GameObject> gameObjects() {
@@ -144,7 +144,6 @@ public class Asteroid {
 	}
 	
 	public Dimension dimensions() {
-		return this.DIMENSIONS;
+		return Asteroid.DIMENSIONS;
 	}
-
 }

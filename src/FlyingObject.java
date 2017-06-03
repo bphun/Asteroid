@@ -1,10 +1,9 @@
-import java.awt.Graphics2D;
-import java.awt.Image;
-import javax.imageio.ImageIO;
 import java.net.URL;
+import java.awt.Image;
 import java.io.IOException;
-import java.awt.Color;
 import java.util.ArrayList;
+import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 
 public class FlyingObject extends GameObject {
@@ -17,10 +16,10 @@ public class FlyingObject extends GameObject {
 		this.vX = vX;
 		this.vY = vY;
 
-		openImage((int)Math.random() * 3);
+		this.openImage((int)Math.random() * 3);
 
-		width = image.getWidth(null);
-		height = image.getHeight(null);
+		this.width = image.getWidth(null);
+		this.height = image.getHeight(null);
 
 	}
 
@@ -38,10 +37,13 @@ public class FlyingObject extends GameObject {
 					imgURL = getClass().getResource("asteroid2.png");
 					break;
 			}
+
 			if (imgURL != null) {
 				image = ImageIO.read(imgURL);
 			}
+
 			image = image.getScaledInstance(image.getWidth(null) / 2, image.getHeight(null) / 2, Image.SCALE_DEFAULT);
+
 		} catch (IOException e) {
 			System.err.println("ERROR: Cold not open image");
 			e.printStackTrace();
@@ -55,6 +57,7 @@ public class FlyingObject extends GameObject {
 		g2.rotate(-direction);
 		g2.drawImage(image, -width / 2,  -height / 2, null);
 		g2.setTransform(a);
+
 		direction += 0.01;
 	}
 
@@ -63,6 +66,7 @@ public class FlyingObject extends GameObject {
 		ArrayList<GameObject> gameObjects = asteroid.gameObjects();
 		for (int i = 0; i < gameObjects.size(); i++) {
 			GameObject go = gameObjects.get(i);
+			
 			if (go.equals(this)) { continue; }
 		
 			if (this.boundingRect().intersects(go.boundingRect())) {
@@ -76,8 +80,6 @@ public class FlyingObject extends GameObject {
 					go.vX -= 0.01;
 					go.vY -= 0.01;
 				}
-
-
 			}
 		}
 		checkOffScreen();
@@ -94,5 +96,4 @@ public class FlyingObject extends GameObject {
 		location.addX(vX);
 		location.addY(vY);
 	}
-
 }

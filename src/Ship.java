@@ -1,26 +1,22 @@
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.net.URL;
+import java.awt.Image;
+import java.io.IOException;
+import java.awt.Graphics2D;
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.geom.AffineTransform;
 
 public class Ship extends GameObject {
-
-	private static Image shipImage;
 
 	protected Weapon weapon;
 	protected boolean rotateLeft;
 	protected boolean rotateRight;
 	protected boolean shouldAccelerate;
 
+	private static Image shipImage;
+
 	private static final double ACCEL = 0.02;
-	private static final double FRICTION = ACCEL;
-	private static final double DECEL = 0.05;
 	private static final int MAX_VELOCITY = 10;
+	private static final double FRICTION = ACCEL;
 
 	public Ship(Location location, int width, int height, Asteroid asteroid) {
 		super(location, width, height, asteroid);
@@ -31,6 +27,7 @@ public class Ship extends GameObject {
 
 	private void openImage() {
 		if (shipImage != null) { return; }
+
 		try {		
 			URL shipImageURL = getClass().getResource("shipImage.png");
 			if (shipImageURL != null) {
@@ -40,7 +37,6 @@ public class Ship extends GameObject {
 			System.err.println("Could not open image ( shipImage.png )");
 			e.printStackTrace();
 		}
-
 	}
 
 	public void aimWeapon() {
@@ -103,7 +99,7 @@ public class Ship extends GameObject {
 
 	@Override
 	public void move() {
-		
+
 		if (shouldAccelerate) {
 			if (vX < MAX_VELOCITY && vX != MAX_VELOCITY * Math.sin(direction)) {
 				if (vX > MAX_VELOCITY * Math.sin(direction)) {
@@ -151,5 +147,4 @@ public class Ship extends GameObject {
 
 		weapon.tickCooldown();
 	}
-
 }

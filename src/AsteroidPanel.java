@@ -1,21 +1,21 @@
 import java.awt.Color;
-import javax.swing.AbstractAction;
+import java.awt.Graphics;
 import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.awt.Graphics2D;
 import javax.swing.KeyStroke;
 import java.awt.RenderingHints;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 public class AsteroidPanel extends JPanel {
 
-	private Asteroid asteroid;
 	private Ship ship;
+	private Asteroid asteroid;
 	private boolean clickToRestart;
 
 	public AsteroidPanel(Dimension dimension, Asteroid asteroid) {
@@ -30,14 +30,15 @@ public class AsteroidPanel extends JPanel {
 	
 	private void setUpKeyMappings() {
 		this.requestFocusInWindow();
+
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false),"thrust");
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true),"stopThrust");
 
-		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false),"left");
-		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true),"stopLeft");
-		
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false),"right");
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true),"stopRight");	
+
+		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false),"left");
+		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true),"stopLeft");
 
 		this.getActionMap().put("thrust",new AbstractAction(){
 			@Override
@@ -84,6 +85,7 @@ public class AsteroidPanel extends JPanel {
 	
 	private void setUpClickListener() {
 		this.requestFocusInWindow();
+
 		this.addMouseListener(new MouseListener() {
 
 			@Override
@@ -102,7 +104,6 @@ public class AsteroidPanel extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent click) {
-
 				ship.shouldShoot(true);
 			}
 
@@ -138,7 +139,5 @@ public class AsteroidPanel extends JPanel {
 		for (int i = 0; i < gameObjects.size(); i++) {
 			gameObjects.get(i).draw(g2);
 		}
-
 	}
-
 }
