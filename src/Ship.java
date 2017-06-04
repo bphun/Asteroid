@@ -70,8 +70,7 @@ public class Ship extends GameObject {
 			if (go.equals(this)) { continue; }
 			if (go.boundingRect().intersects(this.boundingRect())) {
 				if (go instanceof FlyingObject) {
-					this.markRemove();
-					asteroid.clickToRestart();					
+					asteroid.clickToRestart();
 				}
 			}
 		}

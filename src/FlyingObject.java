@@ -9,14 +9,30 @@ import java.awt.geom.AffineTransform;
 public class FlyingObject extends GameObject {
 
 	private Image image;
+	private int division;
 
-	public FlyingObject(Location location, double vX, double vY, Asteroid asteroid) {
+	public FlyingObject(Location location, double vX, double vY, int division, Asteroid asteroid) {
+		super(location, asteroid);
+	
+		this.vX = vX;
+		this.vY = vY;
+		this.division = division;
+
+		this.openImage((int)Math.random() * 3);
+
+		this.width = image.getWidth(null);
+		this.height = image.getHeight(null);
+	}
+
+	public FlyingObject(Location location, double vX, double vY, int division, Image image, Asteroid asteroid) {
 		super(location, asteroid);
 	
 		this.vX = vX;
 		this.vY = vY;
 
-		this.openImage((int)Math.random() * 3);
+		this.division = division;
+
+		this.image = image;
 
 		this.width = image.getWidth(null);
 		this.height = image.getHeight(null);
@@ -42,12 +58,31 @@ public class FlyingObject extends GameObject {
 				image = ImageIO.read(imgURL);
 			}
 
-			image = image.getScaledInstance(image.getWidth(null) / 2, image.getHeight(null) / 2, Image.SCALE_DEFAULT);
-
 		} catch (IOException e) {
 			System.err.println("ERROR: Cold not open image");
 			e.printStackTrace();
 		}
+	}
+
+	private Image resize(Image img) {
+		switch (division) {
+			case 1:
+				img = img.getScaledInstance((int)img.getWidth(null) / 2, (int)img.getHeight(null) / 2, Image.SCALE_DEFAULT);
+				break;
+			case 2:
+				img = img.getScaledInstance((int)img.getWidth(null) - 5, (int)img.getHeight(null) - 5, Image.SCALE_DEFAULT);
+				break;
+		}
+		return img;
+	}
+
+	public void updateDivisions() {
+		division++;
+
+		image = resize(image);
+
+		width = image.getWidth(null);
+		height = image.getHeight(null);
 	}
 
 	@Override
@@ -71,7 +106,13 @@ public class FlyingObject extends GameObject {
 		
 			if (this.boundingRect().intersects(go.boundingRect())) {
 				if (go instanceof Bullet) {
-					this.markRemove();
+					if (division == 2) {
+						markRemove();
+						return;
+					}
+					
+					this.updateDivisions();
+					asteroid.addGameObject(asteroid.gameObjects().size(), new FlyingObject(new Location(this.location.x() + width, this.location.y() + height), this.vX - (this.vX * 2), this.vY, this.division, image, asteroid));
 				}
 
 				if (go instanceof FlyingObject) {

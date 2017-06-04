@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -15,6 +16,8 @@ import java.awt.event.MouseListener;
 public class AsteroidPanel extends JPanel {
 
 	private Ship ship;
+	private int points;
+	private int currPoints;
 	private Asteroid asteroid;
 	private boolean clickToRestart;
 
@@ -112,12 +115,18 @@ public class AsteroidPanel extends JPanel {
 				if (clickToRestart) {
 					asteroid.restart();
 					clickToRestart = false;
+					points = 0;
+					currPoints = 0;
 				}
 				ship.shouldShoot(false);
 			}
 		});
 	}
 	
+	public void updatePoints() {
+		points += 50;
+	}
+
 	public void clickToRestart(boolean clickToRestart) {
 		this.clickToRestart = clickToRestart;
 	}
@@ -129,6 +138,7 @@ public class AsteroidPanel extends JPanel {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+		g2.setFont(new Font("Avenir Next", Font.PLAIN, 20));
 		if (clickToRestart) {
 			g2.setColor(Color.WHITE);
 			g2.drawString("You died... click to restart.", asteroid.width() / 2, asteroid.height() / 2);
@@ -139,5 +149,15 @@ public class AsteroidPanel extends JPanel {
 		for (int i = 0; i < gameObjects.size(); i++) {
 			gameObjects.get(i).draw(g2);
 		}
+		gameObjects = null;
+
+		g2.setColor(Color.WHITE);
+		if (currPoints < points) {
+			g2.drawString("Points: " + currPoints, 20, 30);
+			currPoints++;
+		} else {
+			g2.drawString("Points: " + points, 20, 30);
+		}
+		g2.setColor(Color.BLACK);
 	}
 }

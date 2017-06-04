@@ -47,6 +47,7 @@ public class Bullet extends GameObject {
 			if (go.boundingRect().intersects(this.boundingRect())) {
 
 				if (go instanceof FlyingObject) {
+					asteroid.updatePoints();
 					this.markRemove();
 				}
 				

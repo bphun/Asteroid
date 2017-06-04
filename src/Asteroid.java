@@ -14,7 +14,7 @@ public class Asteroid {
 	private ArrayList<GameObject> gameObjects;
 	
 	private static final int REFRESH_INTERVAL = 8;
-	private static final int NUM_FLYING_OBJECTS =  15;
+	private static final int NUM_FLYING_OBJECTS = 50;
 	private static final Dimension DIMENSIONS = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class Asteroid {
 	}
 
 	private void addFlyingObjects() {
-		if ((int)Math.random() * 10 != (int)Math.random() * 10 ) { return; }
+		if ((int)(Math.random() * 10) != (int)(Math.random() * 100) ) { return; }
 
 		int currFlyingObjects = 0;
 		for (int i = 0; i < gameObjects.size(); i++) {
@@ -93,30 +93,32 @@ public class Asteroid {
 			}
 		}
 
-		for (int i = 0; i < NUM_FLYING_OBJECTS - currFlyingObjects; i++) {
-			switch ((int)(Math.random() * 4)) {
-				case 0:
-					addGameObject(gameObjects.size() , new FlyingObject( new Location(0, (int)(Math.random() * height())), Math.random() * 0.2, Math.random() * 0.2,this));
-					break;
-				case 1:
-					addGameObject(gameObjects.size() , new FlyingObject( new Location((int)(Math.random() * width()), 0), Math.random() * 0.2, Math.random() * 0.2, this));
-					break;
-				case 2:
-					addGameObject(gameObjects.size() , new FlyingObject( new Location(width(), (int)(Math.random() * height())), Math.random() * 0.2, Math.random() * 0.2, this));
-					break;
-				case 3:
-					addGameObject(gameObjects.size() , new FlyingObject( new Location((int)(Math.random() * width()), height()), Math.random() * 0.2, Math.random() * 0.2, this));
-					break;
-			}
+		if (NUM_FLYING_OBJECTS - currFlyingObjects <= 0) { return; }
+
+		switch ((int)(Math.random() * 4)) {
+			case 0:
+				addGameObject(gameObjects.size() , new FlyingObject( new Location(0, (int)(Math.random() * height())), Math.random() * 0.2, Math.random() * 0.2, 0,this));
+				break;
+			case 1:
+				addGameObject(gameObjects.size() , new FlyingObject( new Location((int)(Math.random() * width()), 0), Math.random() * 0.2, Math.random() * 0.2, 0, this));
+				break;
+			case 2:
+				addGameObject(gameObjects.size() , new FlyingObject( new Location(width(), (int)(Math.random() * height())), -(Math.random() * 0.2), Math.random() * 0.2, 0, this));
+				break;
+			case 3:
+				addGameObject(gameObjects.size() , new FlyingObject( new Location((int)(Math.random() * width()), height()), Math.random() * 0.2, -(Math.random() * 0.2), 0, this));
+				break;
 		}
 	}
 
+	public void updatePoints() {
+		panel.updatePoints();
+	}
+
 	public void restart() {
-		t.stop();
 		gameObjects.clear();
 		initShip();
 		addFlyingObjects();
-		t.start();
 	}
 
 	public void clickToRestart() {
