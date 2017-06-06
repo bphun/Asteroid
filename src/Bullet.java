@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.Random;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -47,10 +48,26 @@ public class Bullet extends GameObject {
 			if (go.boundingRect().intersects(this.boundingRect())) {
 
 				if (go instanceof FlyingObject) {
-					asteroid.updatePoints();
+					switch (((FlyingObject)go).division) {
+						case 0:
+							asteroid.updatePoints(50);
+							break;
+						case 1:
+							asteroid.updatePoints(30);
+							break;
+						case 2:
+							asteroid.updatePoints(10);
+							break;
+					}
+
+					Location loc = new Location(this.location.x() + width, this.location.y() + height);
+					Random random = new Random();
+					for (int n = 0; n < random.nextInt(5 + 1 - 3) + 3; n++) {
+						double angle = (Math.random() * (Math.PI * 2));
+						asteroid.addGameObject(asteroid.gameObjectSize(), new Particle(loc, angle, asteroid)); 
+					}
 					this.markRemove();
-				}
-				
+				}			
 			}
 		}
 		checkOffScreen();

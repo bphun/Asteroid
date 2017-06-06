@@ -9,7 +9,8 @@ import java.awt.geom.AffineTransform;
 public class FlyingObject extends GameObject {
 
 	private Image image;
-	private int division;
+	
+	protected int division;
 
 	public FlyingObject(Location location, double vX, double vY, int division, Asteroid asteroid) {
 		super(location, asteroid);
@@ -76,6 +77,10 @@ public class FlyingObject extends GameObject {
 		return img;
 	}
 
+	private void didCollide(FlyingObject flyingObject) {
+		
+	}
+
 	public void updateDivisions() {
 		division++;
 
@@ -112,7 +117,7 @@ public class FlyingObject extends GameObject {
 					}
 					
 					this.updateDivisions();
-					asteroid.addGameObject(asteroid.gameObjects().size(), new FlyingObject(new Location(this.location.x() + width, this.location.y() + height), this.vX - (this.vX * 2), this.vY, this.division, image, asteroid));
+					asteroid.addGameObject(asteroid.gameObjects().size(), new FlyingObject(new Location(this.location.x() + this.width, this.location.y() + this.height), this.vX - (this.vX * 2), this.vY, this.division, this.image, asteroid));
 				}
 
 				if (go instanceof FlyingObject) {
@@ -120,6 +125,7 @@ public class FlyingObject extends GameObject {
 					this.vY -= (vY * 2);
 					go.vX -= 0.01;
 					go.vY -= 0.01;
+					// didCollide((FlyingObject)go);
 				}
 			}
 		}

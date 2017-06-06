@@ -1,31 +1,32 @@
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
 
 public abstract class GameObject {
 
-	protected double vX, vY;
-	protected double direction;
 	protected Location location;
 	protected Asteroid asteroid;
+	protected boolean shouldRemove;
+	protected double vX, vY, direction;
 	protected int height, width, health;
-	protected boolean hitPlatform, shouldFall, shouldRemove, canJump;
-
-	protected static final Color STANDARD_COLOR = new Color(117,117,117);
 
 	public GameObject(Location location, int width, int height, Asteroid asteroid) {
 		this.location = location;
 		this.width = width;
 		this.height =  height;
 		this.asteroid = asteroid;
-		this.shouldFall = true;
 		this.health = 100;
+	}
+
+	public GameObject(Location location, double direction, int health, Asteroid asteroid) {
+		this.location = location;
+		this.direction = direction;
+		this.health = health;
+		this.asteroid = asteroid;
 	}
 
 	public GameObject(Location location, Asteroid asteroid) {
 		this.location = location;
 		this.asteroid = asteroid;
-		this.shouldFall = true;
 		this.health = 100;
 	}
 

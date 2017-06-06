@@ -14,7 +14,7 @@ public class Asteroid {
 	private ArrayList<GameObject> gameObjects;
 	
 	private static final int REFRESH_INTERVAL = 8;
-	private static final int NUM_FLYING_OBJECTS = 50;
+	private static final int NUM_FLYING_OBJECTS = 100;
 	private static final Dimension DIMENSIONS = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class Asteroid {
 	}
 
 	private void addFlyingObjects() {
-		if ((int)(Math.random() * 10) != (int)(Math.random() * 100) ) { return; }
+		if ((int)(Math.random() * 20) != (int)(Math.random() * 40) ) { return; }
 
 		int currFlyingObjects = 0;
 		for (int i = 0; i < gameObjects.size(); i++) {
@@ -111,18 +111,24 @@ public class Asteroid {
 		}
 	}
 
-	public void updatePoints() {
-		panel.updatePoints();
+	public int gameObjectSize() {
+		return gameObjects.size();
+	}
+
+	public void updatePoints(int points) {
+		panel.updatePoints(points);
 	}
 
 	public void restart() {
+		t.stop();
 		gameObjects.clear();
 		initShip();
 		addFlyingObjects();
+		t.start();
 	}
 
 	public void clickToRestart() {
-		panel.clickToRestart(true);
+ 		panel.clickToRestart(true);
 	}
 
 	public Ship ship() {

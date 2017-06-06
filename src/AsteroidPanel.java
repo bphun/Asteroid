@@ -113,18 +113,19 @@ public class AsteroidPanel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				if (clickToRestart) {
-					asteroid.restart();
 					clickToRestart = false;
 					points = 0;
 					currPoints = 0;
+					asteroid.restart();
+					ship = asteroid.ship();
 				}
 				ship.shouldShoot(false);
 			}
 		});
 	}
 	
-	public void updatePoints() {
-		points += 50;
+	public void updatePoints(int points) {
+		this.points += points;
 	}
 
 	public void clickToRestart(boolean clickToRestart) {
@@ -133,8 +134,7 @@ public class AsteroidPanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
+		super.paintComponent(g);		
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
