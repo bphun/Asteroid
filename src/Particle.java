@@ -1,12 +1,13 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Particle extends GameObject {
 
-	private static final double SPEED = 0.5;
-	private static final int DIAMETER = 1;
+	private static final int DIAMETER = 2;
+	private static final double SPEED = 0.2;
 
-	public Particle(Location location, double direction, Asteroid asteroid) {
-		super(location, direction, 1000, asteroid);
+	public Particle(Location location, double vX, double vY, int health, Asteroid asteroid) {
+		super(location, vX, vY, health, asteroid);
 	}
 
 	@Override
@@ -17,7 +18,9 @@ public class Particle extends GameObject {
 
 	@Override
 	public void draw(Graphics2D g) {
+		g.setColor(Color.WHITE);
 		g.fillOval((int)location.x(), (int)location.y(), DIAMETER, DIAMETER);
+		g.setColor(Color.BLACK);
 	}
 
 	@Override
@@ -31,7 +34,8 @@ public class Particle extends GameObject {
 			return;
 		}
 
-		location.addVector(SPEED, direction);
+		location.addX(vX);
+		location.addY(vY);
 
 	}
 

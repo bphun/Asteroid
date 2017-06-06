@@ -13,10 +13,8 @@ public class FlyingObject extends GameObject {
 	protected int division;
 
 	public FlyingObject(Location location, double vX, double vY, int division, Asteroid asteroid) {
-		super(location, asteroid);
+		super(location, vX, vY, asteroid);
 	
-		this.vX = vX;
-		this.vY = vY;
 		this.division = division;
 
 		this.openImage((int)Math.random() * 3);
@@ -115,6 +113,7 @@ public class FlyingObject extends GameObject {
 						markRemove();
 						return;
 					}
+
 					
 					this.updateDivisions();
 					asteroid.addGameObject(asteroid.gameObjects().size(), new FlyingObject(new Location(this.location.x() + this.width, this.location.y() + this.height), this.vX - (this.vX * 2), this.vY, this.division, this.image, asteroid));

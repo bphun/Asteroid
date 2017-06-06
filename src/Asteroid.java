@@ -123,7 +123,7 @@ public class Asteroid {
 		t.stop();
 		gameObjects.clear();
 		initShip();
-		addFlyingObjects();
+		// addFlyingObjects();
 		t.start();
 	}
 

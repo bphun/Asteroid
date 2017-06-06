@@ -46,13 +46,17 @@ public class Ship extends GameObject {
 	public void shoot() {
 		if (weapon.readyToFire()) {
 			aimWeapon();
-			asteroid.addGameObject(asteroid.gameObjects().size(), weapon.shoot(new Location(this.location.x() + (width / 2), this.location.y() + (height / 2)), 5));
+			asteroid.addGameObject(asteroid.gameObjects().size(), weapon.shoot(new Location(this.location.x() + (width / 2), this.location.y() + (height / 2)), 6));
 			weapon.resetCooldown();
 		}
 	}
 
 	public void shouldShoot(boolean shouldShoot) {
 		weapon.setFiringStatus(shouldShoot);
+	}
+
+	public double speed() {
+		return Math.atan2(vY, vX);
 	}
 
 	@Override
@@ -119,6 +123,19 @@ public class Ship extends GameObject {
 			} else {
 				location.addY(vY -= FRICTION);
 			}
+			// double particlevY = -Math.random() * 0.7;
+			// double particlevX = Math.random() * 0.7;
+
+			// switch ((int)Math.random() * 2) {
+			// 	case 0:
+			// 	particlevX = -particlevX;
+			// 	break;
+			// }
+
+			// Location particleLocation = new Location(location.x() + Math.cos(direction), location.y() + Math.sin(direction));
+
+			// asteroid.addGameObject(asteroid.gameObjectSize(), new Particle( particleLocation, particlevX, particlevY, 20, asteroid));
+		
 		} else {
 			if (vX != 0) {
 				if (vX > 0) {

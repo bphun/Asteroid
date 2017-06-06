@@ -63,8 +63,18 @@ public class Bullet extends GameObject {
 					Location loc = new Location(this.location.x() + width, this.location.y() + height);
 					Random random = new Random();
 					for (int n = 0; n < random.nextInt(5 + 1 - 3) + 3; n++) {
-						double angle = (Math.random() * (Math.PI * 2));
-						asteroid.addGameObject(asteroid.gameObjectSize(), new Particle(loc, angle, asteroid)); 
+						double vX = Math.random() * 0.3;
+						double vY = Math.random() * 0.3;
+
+						switch ((int)Math.random() * 2) {
+							case 0:
+								vX = -vX;
+								break;
+							case 1:
+								vY = -vY;
+								break;
+						}
+						asteroid.addGameObject(asteroid.gameObjectSize(), new Particle(new Location(loc), vX, vY, 100, asteroid)); 
 					}
 					this.markRemove();
 				}			

@@ -17,9 +17,17 @@ public abstract class GameObject {
 		this.health = 100;
 	}
 
-	public GameObject(Location location, double direction, int health, Asteroid asteroid) {
+	public GameObject(Location location, double vX, double vY, Asteroid asteroid) {
 		this.location = location;
-		this.direction = direction;
+		this.vX = vX;
+		this.vY = vY;
+		this.asteroid = asteroid;
+	}
+
+	public GameObject(Location location, double vX, double vY, int health, Asteroid asteroid) {
+		this.location = location;
+		this.vX = vX;
+		this.vY = vY;
 		this.health = health;
 		this.asteroid = asteroid;
 	}
